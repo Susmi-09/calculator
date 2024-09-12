@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Advanced Calculator</title>
+<style>
+body
+{
+background-image: url("C:/Users/15712/Desktop/re3.jpg");
+margin: 0;
+padding: 0;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+flex-direction: column;
+}
+h1
+{
+margin-top: 10px;
+margin-bottom: 40px;
+font-size: 50px;
+color: black;
+text-align: center;
+}
+.container {
+            padding: 40px;
+            background-color: white;
+            border: 5px solid black;
+            border-radius: 20px;
+            text-align: center;
+            width: 500px;
+        }
+        #calcDisplay {
+            width: 95%;
+            height: 50px;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-align: right;
+            padding: 15px;
+            border: 3px solid black;
+            border-radius: 5px;
+        }
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .button {
+            padding: 20px;
+            background-color: pink;
+            color: black;
+            border: 2px solid black;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 100px;
+            height: 60px;
+            font-size: 24px;
+        }
+        .submit-button {
+            padding: 20px;
+            width: 150px;
+            height: 70px;
+            font-size: 24px;
+            background-color: pink;
+            color: black;
+            border: 2px solid black;
+            cursor: pointer;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+        .hidden {
+            display: none;
+        }
+        .result {
+            font-size: 28px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="loginContainer">
+        <h1>Login</h1>
+        <label>User Name: <input type="text" id="username"></label><br><br>
+        <label>Password: <input type="password" id="password"></label><br><br>
+        <button class="submit-button" onclick="showCalculator()">Submit</button>
+    </div>
+
+    <div class="container hidden" id="calculatorContainer">
+        <h1 id="calcHeading"></h1>
+        <input type="text" id="calcDisplay" disabled>
+
+        <div class="button-row">
+            <button class="button" onclick="appendNumber('1')">1</button>
+            <button class="button" onclick="appendNumber('2')">2</button>
+            <button class="button" onclick="appendNumber('3')">3</button>
+            <button class="button" onclick="appendOperator('+')">+</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="appendNumber('4')">4</button>
+            <button class="button" onclick="appendNumber('5')">5</button>
+            <button class="button" onclick="appendNumber('6')">6</button>
+            <button class="button" onclick="appendOperator('-')">-</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="appendNumber('7')">7</button>
+            <button class="button" onclick="appendNumber('8')">8</button>
+            <button class="button" onclick="appendNumber('9')">9</button>
+            <button class="button" onclick="appendOperator('')"></button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="appendNumber('0')">0</button>
+            <button class="button" onclick="clearDisplay()">C</button>
+            <button class="button" onclick="calculate()">=</button>
+            <button class="button" onclick="appendOperator('/')">/</button>
+        </div>
+
+        <div class="button-row">
+            <button class="button" onclick="appendOperator('%')">%</button>
+            <button class="button" onclick="calculateSquare()">x²</button>
+            <button class="button" onclick="calculateCube()">x³</button>
+            <button class="button" onclick="calculateSqrt()">√x</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="calculateCbrt()">∛x</button>
+            <button class="button" onclick="calculatePower()">x^y</button>
+            <button class="button" onclick="calculateFactorial()">x!</button>
+            <button class="button" onclick="calculateLn()">ln(x)</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="calculateLog10()">log₁₀(x)</button>
+            <button class="button" onclick="calculateExp()">e^x</button>
+            <button class="button" onclick="calculateTrig('sin')">sin(x)</button>
+            <button class="button" onclick="calculateTrig('cos')">cos(x)</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="calculateTrig('tan')">tan(x)</button>
+            <button class="button" onclick="calculateTrig('asin')">asin(x)</button>
+            <button class="button" onclick="calculateTrig('acos')">acos(x)</button>
+            <button class="button" onclick="calculateTrig('atan')">atan(x)</button>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function showCalculator() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            if (username.trim() !== "" && password.trim() !== "") {
+                document.getElementById("loginContainer").classList.add("hidden");
+                document.getElementById("calculatorContainer").classList.remove("hidden");
+                document.getElementById("calcHeading").innerText = username + "'s Calculator";
+            } else {
+                alert("Please enter both username and password.");
+            }
+        }
+
+        let currentInput = '';
+
+        function appendNumber(number) {
+            currentInput += number;
+            document.getElementById("calcDisplay").value = currentInput;
+        }
+
+        function appendOperator(operator) {
+            currentInput += ' ' + operator + ' ';
+            document.getElementById("calcDisplay").value = currentInput;
+        }
+
+        function clearDisplay() {
+            currentInput = '';
+            document.getElementById("calcDisplay").value = '';
+            document.getElementById("result").innerText = '';
+        }
+
+        function calculate() {
+            try {
+                let result = eval(currentInput);
+                document.getElementById("result").innerText = "Result: " + result;
+            } catch (error) {
+                document.getElementById("result").innerText = "Error!";
+            }
+        }
+
+        function calculateSquare() {
+            try {
+                let num = parseFloat(currentInput);
+                let result = num * num;
+                document.getElementById("result").innerText = "Result: " + result;
+            } catch (error) {
+                document.getElementById("result").innerText = "Error!";
+            }
+        }
+
+        function calculateCube() {
+            try {
+                let num = parseFloat(currentInput);
+                let result = num * num * num;
+                document.getElementById("result").innerText = "Result: " + result;
+            } catch (error) {
+                document.getElementById("result").innerText = "Error!";
+            }
+        }
+
+        function calculatePower() {
+            try {
+                let [base, exponent] = currentInput.split('^');
+                let result = Math.pow(parseFloat(base), parseFloat(exponent));
+                document.getElementById("result").innerText = "Result: " + result;
+            } catch (error) {
+                document.getElementById("result").innerText = "Error!";
+            }
+        }
+
+        function calculateFactorial() {
+            try {
+                let num = parseInt(currentInput);
+                let result = 1;
+                for (let i = 1; i <= num; i++) {
+                    result *= i;
+                }
+                document.getElementById("result").innerText = "Result: " + result;
+            } catch (error) {
+                document.getElementById("result").innerText = "Error!";
+            }
+        }
+
+        function calculateTrig(func) {
+            try {
+                let num = parseFloat(currentInput);
+                let result;
+                switch (func) {
+                    case 'sin': result = Math.sin(num); break;
+                    case 'cos': result = Math.cos(num); break;
+                    case 'tan': result = Math.tan(num); break;
+                    case 'asin': result = Math.asin(num); break;
+                    case 'acos': result = Math.acos(num); break;
+                    case 'atan': result = Math.atan(num); break;
+                }
+                document.getElementById("result").innerText = "Result: " + result;
+            } catch (error) {
+                document.getElementById("result").innerText = "Error!";
+            }
+        }
+    </script>
+</body>
+</html>
